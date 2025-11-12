@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuzzReels</title>
+</head>
+
+<link rel="stylesheet" href="styles.css">
+
+<body>
+    <!-- Auth Screen -->
+    <div id="authScreen" class="auth-screen">
+        <div class="auth-box">
+            <h1>🎬 Buzz Reels</h1>
+
+            <div id="loginForm">
+                <h3 style="margin-bottom: 20px; color: #333;">Login</h3>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password">
+                </div>
+                <button class="btn" onclick="login()">Login</button>
+                <div class="toggle-auth">
+                    Don't have an account? <a onclick="toggleAuth()">Register</a>
+                </div>
+            </div>
+
+            <div id="registerForm" class="hidden">
+                <h3 style="margin-bottom: 20px; color: #333;">Register</h3>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="regName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="regPassword" placeholder="Enter your password">
+                </div>
+                <div class="form-group">
+                    <label>Account Type</label>
+                    <select id="accountType">
+                        <option value="user">User/Customer</option>
+                        <option value="creator">Content Creator</option>
+                        <option value="business">Business</option>
+                    </select>
+                </div>
+                <div class="form-group" id="bioField" style="display: none;">
+                    <label>Bio/Description</label>
+                    <textarea id="regBio" rows="3" placeholder="Tell us about yourself or your business"></textarea>
+                </div>
+                <button class="btn" onclick="register()">Register</button>
+                <div class="toggle-auth">
+                    Already have an account? <a onclick="toggleAuth()">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="main-app">
+        <div class="container">
+            <div class="header">
+                <h2>🎬 Buzz Reels</h2>
+                <div class="user-info">
+                    <span id="userName"></span>
+                    <span id="userBadge" class="badge"></span>
+                    <button class="btn-logout" onclick="logout()">Logout</button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <!-- Business Dashboard -->
+                <div id="businessDashboard" class="hidden">
+                    <div class="tabs">
+                        <button class="tab active" onclick="switchTab('creators')">Hire Creators</button>
+                        <button class="tab" onclick="switchTab('messages')">Messages</button>
+                        <button class="tab" onclick="switchTab('content')">Content</button>
+                    </div>
+
+                    <div id="creatorsTab" class="tab-content active">
+                        <h3>Available Content Creators</h3>
+                        <div class="creators-list" id="creatorsList"></div>
+                    </div>
+
+                    <div id="messagesTab" class="tab-content">
+                        <h3>Messages</h3>
+                        <div class="messages-container" id="businessMessages"></div>
+                    </div>
+
+                    <div id="contentTab" class="tab-content">
+                        <h3>Your Content</h3>
+                        <div class="content-grid" id="businessContent"></div>
+                    </div>
+                </div>
+
+                <!-- Creator Dashboard -->
+                <div id="creatorDashboard" class="hidden">
+                    <div class="tabs">
+                        <button class="tab active" onclick="switchTab('creator-messages')">Messages</button>
+                        <button class="tab" onclick="switchTab('upload')">Upload Content</button>
+                        <button class="tab" onclick="switchTab('my-content')">My Content</button>
+                    </div>
+
+                    <div id="creatorMessagesTab" class="tab-content active">
+                        <h3>Job Requests</h3>
+                        <div class="messages-container" id="creatorMessages"></div>
+                    </div>
+
+                    <div id="uploadTab" class="tab-content">
+                        <h3>Upload New Content</h3>
+                        <div class="upload-form">
+                            <div class="form-group">
+                                <label>Content Title</label>
+                                <input type="text" id="contentTitle" placeholder="Enter content title">
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="contentDesc" rows="3" placeholder="Describe your content"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Content Type</label>
+                                <select id="contentType">
+                                    <option value="video">Video</option>
+                                    <option value="photo">Photo</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Business (Optional)</label>
+                                <select id="selectBusiness">
+                                    <option value="">Personal Content</option>
+                                </select>
+                            </div>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="contentFile" accept="image/*,video/*">
+                                <label for="contentFile" class="file-input-label">Choose File</label>
+                            </div>
+                            <span id="fileName" style="margin-left: 10px; color: #666;"></span>
+                            <br><br>
+                            <button class="btn" onclick="uploadContent()">Upload Content</button>
+                        </div>
+                    </div>
+
+                    <div id="myContentTab" class="tab-content">
+                        <h3>My Uploaded Content</h3>
+                        <div class="content-grid" id="myContent"></div>
+                    </div>
+                </div>
+
+                <!-- User Dashboard -->
+                <div id="userDashboard" class="hidden">
+                    <h3>Discover Content</h3>
+                    <div class="content-grid" id="userContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Modal -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Send Message</h3>
+                <button class="close-modal" onclick="closeModal()">Close</button>
+            </div>
+            <div class="form-group">
+                <label>To: <span id="recipientName"></span></label>
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea id="messageText" rows="5" placeholder="Type your message here..."></textarea>
+            </div>
+            <button class="btn" onclick="sendMessage()">Send Message</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
